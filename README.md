@@ -9,4 +9,4 @@ Note that although this repository is public, and that you
 can download packages freely using the GitHub user interface
 even if not logged in, GitHub requires that use of the package
 registry from tools such as Maven requires authentication
-through a Personal Access Token.
+through a Personal Access Token with the `read:packages` scope.
