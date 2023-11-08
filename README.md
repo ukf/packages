@@ -11,3 +11,55 @@ However, note that GitHub requires that use of the package
 registry from tools such as Maven is authenticated. This is
 normally done by using a Personal Access Token with the
 `read:packages` scope.
+
+For Maven, include a `<repository>` definition like this in
+your project's POM:
+
+```xml
+<repositories>
+    <repository>
+        <id>ukf-packages</id>
+        <url>https://maven.pkg.github.com/ukf/packages</url>
+    </repository>
+</repositories>
+```
+
+To use a Personal Access Token to provide authentication
+for a Maven build, include it in your `~/.m2/settings.xml`
+like this:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0
+        http://maven.apache.org/xsd/settings-1.2.0.xsd">
+
+    <servers>
+
+        <server>
+            <id>ukf-packages</id>
+            <username>your-github-username</username>
+            <password>your-personal-access-token</password>
+        </server>
+
+    </servers>
+
+</settings>
+```
+
+To provide authentication for a CI job using GitHub Actions,
+you can build an appropriate `settings.xml` file with an
+action like this:
+
+```yaml
+    - name: Set up Maven
+      uses: s4u/maven-settings-action@v2.8.0
+      with:
+        servers: |
+          [{
+              "id": "ukf-packages",
+              "username": "${{ github.actor }}",
+              "password": "${{ secrets.GITHUB_TOKEN }}"
+          }]
+```
